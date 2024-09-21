@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // This line specifies the license under which the contract is released.
 
-pragma solidity ^0.8.19;
+pragma solidity 0.8.27;
 // This line specifies the version of the Solidity compiler to use.
 
 import "./w3zetechToken.sol";

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // License identifier indicating that this contract uses the MIT License.
 
-pragma solidity ^0.8.2;
+pragma solidity 0.8.27;
 // This specifies the Solidity version. ^0.8.2 means compatible with any version 0.8.x, but not earlier versions.
 
 import "./w3zetechToken.sol";
