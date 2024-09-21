@@ -4,7 +4,7 @@
 pragma solidity ^0.8.2;
 // Specifies that the contract uses Solidity version 0.8.2 or later, but not breaking changes in future versions.
 
-import "./Math.sol";
+import "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 // Importing a Math library (assuming it has useful functions for performing math operations) that will be used in the contract.
 
 contract MultiSigWallet {

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.2;
 
-import "openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
+import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 // This line imports the ERC20 token standard contract from OpenZeppelin's library.
 // ERC20 is a standard for creating fungible tokens on the Ethereum blockchain.
 
-import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 // This line imports the Ownable contract from OpenZeppelin's library.
 // Ownable is a contract that provides a basic access control mechanism, where a single account (the "owner") has elevated permissions.
 
