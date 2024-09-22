@@ -1,0 +1,66 @@
+CONTRACT_ADDRESS = "0x91B8c037c407d93Ea9b65799fef7548e7f5Cb367";
+
+contract_ABI =  [
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "_multiSigOwners",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_numConfirmationsRequired",
+				"type": "uint256"
+			}
+		],
+		"name": "initializeMultiSigWallet",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "dao",
+		"outputs": [
+			{
+				"internalType": "contract DAO",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "multiSigWallet",
+		"outputs": [
+			{
+				"internalType": "contract MultiSigWallet",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "token",
+		"outputs": [
+			{
+				"internalType": "contract w3zetechToken",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

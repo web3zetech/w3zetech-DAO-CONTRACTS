@@ -1,122 +1,134 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
-// Importing OpenZeppelin's Math library for secure mathematical operations
+// Import the ERC20 interface for the w3z token
+import "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "lib/openzeppelin-contracts/contracts/utils/math/Math.sol";
 
 contract MultiSigWallet {
-    // Using OpenZeppelin's Math library for uint256 type
-    using Math for uint256;
+    using Math for uint256;  // Use OpenZeppelin's Math library for safe mathematical operations
 
-    // Events to log important actions taken in the contract
-    event Deposit(address indexed sender, uint256 amount, uint256 balance); // Log deposits to the wallet
-    event SubmitTransaction( // Log when a transaction is submitted
+    IERC20 public w3zToken;  // Reference to the w3z token contract, used for token transfers
+
+    // Events for logging important actions like deposits and transaction-related events
+    event Deposit(address indexed sender, uint256 amount, uint256 balance);  // Event triggered when tokens are deposited
+    event SubmitTransaction(
         address indexed owner,
         uint256 indexed txIndex,
         address indexed to,
         uint256 value,
         bytes data
-    );
-    event ConfirmTransaction(address indexed owner, uint256 indexed txIndex); // Log when a transaction is confirmed by an owner
-    event RevokeConfirmation(address indexed owner, uint256 indexed txIndex); // Log when an owner revokes their confirmation
-    event ExecuteTransaction(address indexed owner, uint256 indexed txIndex); // Log when a transaction is successfully executed
+    );  // Event triggered when a transaction is submitted
+    event ConfirmTransaction(address indexed owner, uint256 indexed txIndex);  // Event triggered when a transaction is confirmed
+    event RevokeConfirmation(address indexed owner, uint256 indexed txIndex);  // Event triggered when a confirmation is revoked
+    event ExecuteTransaction(address indexed owner, uint256 indexed txIndex);  // Event triggered when a transaction is executed
 
     // State variables
-    address[] public owners; // Array of owner addresses
-    mapping(address => bool) public isOwner; // Mapping to check if an address is an owner
-    uint256 public numConfirmationsRequired; // Number of confirmations required to execute a transaction
+    address[] public owners;  // Array of wallet owners
+    mapping(address => bool) public isOwner;  // Mapping to track which addresses are owners
+    uint256 public numConfirmationsRequired;  // Minimum number of confirmations required for a transaction
+    bool public isInitialized;  // Flag to check if the wallet has been initialized
 
-    // Data structure to store a transaction's details
     struct Transaction {
-        address to; // The address to send funds to
-        uint256 value; // The amount of funds to send
-        bytes data; // Additional transaction data (e.g., for calling a function on another contract)
-        bool executed; // Whether the transaction has been executed
-        uint256 numConfirmations; // Number of confirmations this transaction has received
+        address to;  // Address to send tokens to
+        uint256 value;  // Amount of w3z tokens to send
+        bytes data;  // Optional transaction data (for contract interactions)
+        bool executed;  // Status of whether the transaction has been executed
+        uint256 numConfirmations;  // Number of confirmations received for the transaction
     }
 
-    // Mapping from transaction index to a mapping of owner confirmations
+    // Mapping to track if a transaction has been confirmed by an owner
     mapping(uint256 => mapping(address => bool)) public isConfirmed;
+    Transaction[] public transactions;  // Array to store all submitted transactions
 
-    // Array to hold all submitted transactions
-    Transaction[] public transactions;
+    // Modifiers to restrict access and ensure certain conditions are met
 
-    // Modifiers to limit access to certain functions
-
-    // Modifier to ensure only owners can call the function
+    // Ensure the caller is an owner of the multisig wallet
     modifier onlyOwner() {
-        require(isOwner[msg.sender], "Not an owner"); // Check if the caller is an owner
+        require(isOwner[msg.sender], "Not an owner");
         _;
     }
 
-    // Modifier to ensure the transaction exists
+    // Ensure the transaction exists
     modifier txExists(uint256 _txIndex) {
-        require(_txIndex < transactions.length, "Transaction does not exist"); // Check if the transaction index is valid
+        require(_txIndex < transactions.length, "Transaction does not exist");
         _;
     }
 
-    // Modifier to ensure the transaction hasn't been executed yet
+    // Ensure the transaction has not already been executed
     modifier notExecuted(uint256 _txIndex) {
         require(!transactions[_txIndex].executed, "Transaction already executed");
         _;
     }
 
-    // Modifier to ensure the transaction hasn't already been confirmed by the caller
+    // Ensure the transaction has not already been confirmed by the caller
     modifier notConfirmed(uint256 _txIndex) {
         require(!isConfirmed[_txIndex][msg.sender], "Transaction already confirmed");
         _;
     }
 
-    // Constructor to initialize the contract with a list of owners and the number of confirmations required for transactions
-    constructor(address[] memory _owners, uint256 _numConfirmationsRequired) {
-        require(_owners.length > 0, "Owners required"); // Ensure there is at least one owner
-        require(
-            _numConfirmationsRequired > 0 &&
-            _numConfirmationsRequired <= _owners.length,
-            "Invalid number of confirmations required"
-        );
+    // Ensure that the wallet has not already been initialized
+    modifier onlyWhenNotInitialized() {
+        require(!isInitialized, "Already initialized");
+        _;
+    }
 
-        // Loop through the owners and add them to the contract's state
+    // Constructor without any parameters; initialization will be done later via `initialize`
+    constructor() {}
+
+    // Function to initialize the multisig wallet with owners, number of confirmations, and the w3z token
+    // Can only be called once
+    function initialize(
+        address[] memory _owners,
+        uint256 _numConfirmationsRequired,
+        IERC20 _w3zToken
+    ) public onlyWhenNotInitialized {
+        require(_owners.length > 0, "Owners required");  // Ensure there is at least one owner
+        require(
+            _numConfirmationsRequired > 0 && _numConfirmationsRequired <= _owners.length,
+            "Invalid number of confirmations required"
+        );  // Ensure valid number of confirmations
+
+        // Set up the owners and ensure they are unique
         for (uint256 i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
-            require(owner != address(0), "Invalid owner"); // Ensure the owner address is valid (not 0x0)
-            require(!isOwner[owner], "Owner not unique"); // Ensure each owner is unique
+            require(owner != address(0), "Invalid owner");  // Ensure valid owner address
+            require(!isOwner[owner], "Owner not unique");  // Ensure no duplicate owners
 
-            isOwner[owner] = true; // Mark the address as an owner
-            owners.push(owner); // Add the owner to the owners array
+            isOwner[owner] = true;  // Mark the address as an owner
+            owners.push(owner);  // Add the owner to the owners array
         }
 
-        numConfirmationsRequired = _numConfirmationsRequired; // Set the required number of confirmations
+        numConfirmationsRequired = _numConfirmationsRequired;  // Set the required number of confirmations
+        w3zToken = _w3zToken;  // Assign the w3z token contract instance
+        isInitialized = true;  // Mark the contract as initialized
     }
 
-    // Fallback function to accept Ether deposits to the contract
-    receive() external payable {
-        emit Deposit(msg.sender, msg.value, address(this).balance); // Emit deposit event
+    // Function to allow deposits of w3z tokens into the multisig wallet
+    function deposit(uint256 _amount) external {
+        require(w3zToken.transferFrom(msg.sender, address(this), _amount), "Transfer failed");  // Transfer tokens to the wallet
+        emit Deposit(msg.sender, _amount, w3zToken.balanceOf(address(this)));  // Log the deposit
     }
 
-    // Function to submit a transaction. Can only be called by an owner
+    // Function to submit a new transaction
     function submitTransaction(address _to, uint256 _value, bytes memory _data)
         public
         onlyOwner
     {
-        uint256 txIndex = transactions.length; // Get the next transaction index
+        uint256 txIndex = transactions.length;  // Get the next transaction index
 
-        // Add the transaction to the transactions array
-        transactions.push(
-            Transaction({
-                to: _to, // The recipient of the transaction
-                value: _value, // The value (amount of Ether) to send
-                data: _data, // Optional data to include with the transaction
-                executed: false, // Transaction starts as not executed
-                numConfirmations: 0 // No confirmations yet
-            })
-        );
+        transactions.push(Transaction({
+            to: _to,
+            value: _value,
+            data: _data,
+            executed: false,
+            numConfirmations: 0
+        }));
 
-        // Emit an event for the submitted transaction
-        emit SubmitTransaction(msg.sender, txIndex, _to, _value, _data);
+        emit SubmitTransaction(msg.sender, txIndex, _to, _value, _data);  // Log the submitted transaction
     }
 
-    // Function to confirm a transaction. Can only be called by an owner
+    // Function to confirm a transaction
     function confirmTransaction(uint256 _txIndex)
         public
         onlyOwner
@@ -124,54 +136,46 @@ contract MultiSigWallet {
         notExecuted(_txIndex)
         notConfirmed(_txIndex)
     {
-        Transaction storage transaction = transactions[_txIndex]; // Get the transaction details
-        transaction.numConfirmations += 1; // Increase the number of confirmations
-        isConfirmed[_txIndex][msg.sender] = true; // Mark the transaction as confirmed by the owner
+        Transaction storage transaction = transactions[_txIndex];  // Fetch the transaction
+        transaction.numConfirmations += 1;  // Increment the number of confirmations
+        isConfirmed[_txIndex][msg.sender] = true;  // Mark the transaction as confirmed by this owner
 
-        // Emit an event for the confirmation
-        emit ConfirmTransaction(msg.sender, _txIndex);
+        emit ConfirmTransaction(msg.sender, _txIndex);  // Log the confirmation
     }
 
-    // Function to execute a confirmed transaction. Uses Check-Effects-Interactions pattern
+    // Function to execute a transaction once enough confirmations are received
     function executeTransaction(uint256 _txIndex)
         public
         onlyOwner
         txExists(_txIndex)
         notExecuted(_txIndex)
     {
-        Transaction storage transaction = transactions[_txIndex]; // Get the transaction details
+        Transaction storage transaction = transactions[_txIndex];  // Fetch the transaction
 
-        // **CHECK**: Ensure the transaction has enough confirmations before executing
-        require(
-            transaction.numConfirmations >= numConfirmationsRequired,
-            "Cannot execute transaction"
-        );
+        // Ensure the transaction has enough confirmations before executing
+        require(transaction.numConfirmations >= numConfirmationsRequired, "Cannot execute transaction");
 
-        // **EFFECTS**: Mark the transaction as executed before making any external calls
-        transaction.executed = true;
+        transaction.executed = true;  // Mark the transaction as executed
 
-        // **INTERACTIONS**: Interact with the external address by calling the transaction
-        (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
-        require(success, "Transaction failed"); // Ensure the transaction succeeds
+        // Transfer w3z tokens to the recipient
+        require(w3zToken.transfer(transaction.to, transaction.value), "Token transfer failed");
 
-        // Emit an event for the executed transaction
-        emit ExecuteTransaction(msg.sender, _txIndex);
+        emit ExecuteTransaction(msg.sender, _txIndex);  // Log the transaction execution
     }
 
-    // Function to revoke a confirmation for a transaction. Can only be called by an owner
+    // Function to revoke a confirmation for a transaction
     function revokeConfirmation(uint256 _txIndex)
         public
         onlyOwner
         txExists(_txIndex)
         notExecuted(_txIndex)
     {
-        require(isConfirmed[_txIndex][msg.sender], "Transaction not confirmed"); // Ensure the transaction was already confirmed by the owner
+        require(isConfirmed[_txIndex][msg.sender], "Transaction not confirmed");  // Ensure the transaction is confirmed
 
-        Transaction storage transaction = transactions[_txIndex]; // Get the transaction details
-        transaction.numConfirmations -= 1; // Decrease the number of confirmations
-        isConfirmed[_txIndex][msg.sender] = false; // Revoke the confirmation
+        Transaction storage transaction = transactions[_txIndex];  // Fetch the transaction
+        transaction.numConfirmations -= 1;  // Decrement the number of confirmations
+        isConfirmed[_txIndex][msg.sender] = false;  // Mark the transaction as no longer confirmed by this owner
 
-        // Emit an event for the revoked confirmation
-        emit RevokeConfirmation(msg.sender, _txIndex);
+        emit RevokeConfirmation(msg.sender, _txIndex);  // Log the confirmation revocation
     }
 }

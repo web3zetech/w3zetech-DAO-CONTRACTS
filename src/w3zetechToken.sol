@@ -2,7 +2,7 @@
 pragma solidity 0.8.27;
 
 import "lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
-// This line imports the ERC20 token standard contract from OpenZeppelin's library.
+// This line imports the ERC20 token standard contract from OpenZeppelin's library
 // ERC20 is a standard for creating fungible tokens on the Ethereum blockchain.
 
 import "lib/openzeppelin-contracts/contracts/access/Ownable.sol";
