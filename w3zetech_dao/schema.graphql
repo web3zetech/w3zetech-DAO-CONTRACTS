@@ -1,0 +1,28 @@
+type ProposalCreated @entity(immutable: true) {
+  id: Bytes!
+  proposalId: BigInt! # uint256
+  proposer: Bytes! # address
+  description: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ProposalExecuted @entity(immutable: true) {
+  id: Bytes!
+  proposalId: BigInt! # uint256
+  passed: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Voted @entity(immutable: true) {
+  id: Bytes!
+  proposalId: BigInt! # uint256
+  voter: Bytes! # address
+  votes: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
