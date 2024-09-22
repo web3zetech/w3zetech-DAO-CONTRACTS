@@ -5,6 +5,16 @@
 
 W3Zetech DAO leverages **The Graph** to offer real-time data on governance activities, allowing for a seamless and transparent on-chain experience. Members can easily track proposals, votes, and token purchases, while ensuring all decisions are executed fairly and securely through smart contracts.
 
+**Verified _Smart_Contracts_Addresses**
+
+```
+w3zetechTokenAddress: 0xD818e3AD00F322ebb2A3659A09c1d44C5C447011
+DAOcontractAddress:  0x51632D52aa0b31EeF31D80DAa9DA1bCf2724D53C
+MultiSigContractAddress: 0xbAB4a9cF91D802c053f05B96f809b4D98F3c0D54
+
+```
+
+
 **Mission:**  
 W3Zetech aims to create a decentralized ecosystem where members actively participate in governance and resource management while learning about blockchain technology.
 
