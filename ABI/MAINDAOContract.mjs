@@ -1,0 +1,5 @@
+const ABI = [
+    [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"dao","outputs":[{"internalType":"contract DAO","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address[]","name":"_multiSigOwners","type":"address[]"},{"internalType":"uint256","name":"_numConfirmationsRequired","type":"uint256"}],"name":"initializeMultiSigWallet","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"multiSigWallet","outputs":[{"internalType":"contract MultiSigWallet","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"contract w3zetechToken","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
+]
+
+export default ABI;
