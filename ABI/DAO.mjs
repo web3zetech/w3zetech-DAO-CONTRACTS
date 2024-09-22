@@ -1,5 +1,169 @@
 const ABI = [
-	[{"inputs":[{"internalType":"contract w3zetechToken","name":"_governanceToken","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"proposalId","type":"uint256"},{"indexed":false,"internalType":"address","name":"proposer","type":"address"},{"indexed":false,"internalType":"string","name":"description","type":"string"}],"name":"ProposalCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"proposalId","type":"uint256"},{"indexed":false,"internalType":"bool","name":"passed","type":"bool"}],"name":"ProposalExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"proposalId","type":"uint256"},{"indexed":false,"internalType":"address","name":"voter","type":"address"},{"indexed":false,"internalType":"uint256","name":"votes","type":"uint256"}],"name":"Voted","type":"event"},{"inputs":[{"internalType":"address","name":"_member","type":"address"}],"name":"checkMembershipTier","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_description","type":"string"}],"name":"createProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_proposalId","type":"uint256"}],"name":"executeProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"executionDelay","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"governanceToken","outputs":[{"internalType":"contract w3zetechToken","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"address","name":"","type":"address"}],"name":"hasVoted","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"proposals","outputs":[{"internalType":"address","name":"proposer","type":"address"},{"internalType":"string","name":"description","type":"string"},{"internalType":"uint256","name":"voteCount","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"bool","name":"executed","type":"bool"},{"internalType":"bool","name":"passed","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"quorum","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_proposalId","type":"uint256"}],"name":"voteOnProposal","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"votingDuration","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}]
-]
+  [
+    {
+      inputs: [
+        {
+          internalType: "contract w3zetechToken",
+          name: "_governanceToken",
+          type: "address",
+        },
+      ],
+      stateMutability: "nonpayable",
+      type: "constructor",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "proposalId",
+          type: "uint256",
+        },
+        {
+          indexed: false,
+          internalType: "address",
+          name: "proposer",
+          type: "address",
+        },
+        {
+          indexed: false,
+          internalType: "string",
+          name: "description",
+          type: "string",
+        },
+      ],
+      name: "ProposalCreated",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "proposalId",
+          type: "uint256",
+        },
+        { indexed: false, internalType: "bool", name: "passed", type: "bool" },
+      ],
+      name: "ProposalExecuted",
+      type: "event",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "proposalId",
+          type: "uint256",
+        },
+        {
+          indexed: false,
+          internalType: "address",
+          name: "voter",
+          type: "address",
+        },
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "votes",
+          type: "uint256",
+        },
+      ],
+      name: "Voted",
+      type: "event",
+    },
+    {
+      inputs: [{ internalType: "address", name: "_member", type: "address" }],
+      name: "checkMembershipTier",
+      outputs: [{ internalType: "string", name: "", type: "string" }],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "string", name: "_description", type: "string" },
+      ],
+      name: "createProposal",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "uint256", name: "_proposalId", type: "uint256" },
+      ],
+      name: "executeProposal",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "executionDelay",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "governanceToken",
+      outputs: [
+        { internalType: "contract w3zetechToken", name: "", type: "address" },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "uint256", name: "", type: "uint256" },
+        { internalType: "address", name: "", type: "address" },
+      ],
+      name: "hasVoted",
+      outputs: [{ internalType: "bool", name: "", type: "bool" }],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      name: "proposals",
+      outputs: [
+        { internalType: "address", name: "proposer", type: "address" },
+        { internalType: "string", name: "description", type: "string" },
+        { internalType: "uint256", name: "voteCount", type: "uint256" },
+        { internalType: "uint256", name: "deadline", type: "uint256" },
+        { internalType: "bool", name: "executed", type: "bool" },
+        { internalType: "bool", name: "passed", type: "bool" },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "quorum",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        { internalType: "uint256", name: "_proposalId", type: "uint256" },
+      ],
+      name: "voteOnProposal",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "votingDuration",
+      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      stateMutability: "view",
+      type: "function",
+    },
+  ],
+];
 
 export default ABI;

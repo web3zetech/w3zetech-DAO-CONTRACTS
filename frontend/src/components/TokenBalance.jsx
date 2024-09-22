@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { WalletContext } from '../context/WalletContext';
-import Web3 from 'web3';
+import React, { useContext, useEffect, useState } from "react";
+import { WalletContext } from "../context/WalletContext";
+import Web3 from "web3";
 
 const tokenAbi = []; // Token contract ABI goes here
-const tokenAddress = '0xD818e3AD00F322ebb2A3659A09c1d44C5C447011'; // Token contract address
+const tokenAddress = "0xD818e3AD00F322ebb2A3659A09c1d44C5C447011"; // Token contract address
 
 const TokenBalance = () => {
   const { account, web3 } = useContext(WalletContext);
@@ -15,7 +15,7 @@ const TokenBalance = () => {
         const tokenContract = new web3.eth.Contract(tokenAbi, tokenAddress);
         const balance = await tokenContract.methods.balanceOf(account).call();
         const decimals = await tokenContract.methods.decimals().call();
-        setBalance(Web3.utils.fromWei(balance, 'ether')); // Assuming 18 decimals
+        setBalance(Web3.utils.fromWei(balance, `ether${decimals}`));
       }
     };
     fetchBalance();

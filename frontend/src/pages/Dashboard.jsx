@@ -1,6 +1,6 @@
-import React from 'react';
-import TokenBalance from './TokenBalance';
-import ProposalList from './ProposalList';
+import React from "react";
+import TokenBalance from "../components/TokenBalance";
+import ProposalList from "../components/ProposalList";
 
 const Dashboard = () => {
   return (
