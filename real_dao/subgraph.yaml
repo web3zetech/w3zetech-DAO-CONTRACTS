@@ -30,3 +30,61 @@ dataSources:
         - event: Voted(uint256,address,uint256)
           handler: handleVoted
       file: ./src/dao.ts
+  - kind: ethereum
+    name: w3zetechToken
+    network: base-sepolia
+    source:
+      address: "0xD818e3AD00F322ebb2A3659A09c1d44C5C447011"
+      abi: w3zetechToken
+      startBlock: 15608892
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: w3zetechToken
+          file: ./abis/w3zetechToken.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/w-3-zetech-token.ts
+  - kind: ethereum
+    name: MultiSigWallet
+    network: base-sepolia
+    source:
+      address: "0xbAB4a9cF91D802c053f05B96f809b4D98F3c0D54"
+      abi: MultiSigWallet
+      startBlock: 15609254
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ConfirmTransaction
+        - Deposit
+        - ExecuteTransaction
+        - RevokeConfirmation
+        - SubmitTransaction
+      abis:
+        - name: MultiSigWallet
+          file: ./abis/MultiSigWallet.json
+      eventHandlers:
+        - event: ConfirmTransaction(indexed address,indexed uint256)
+          handler: handleConfirmTransaction
+        - event: Deposit(indexed address,uint256,uint256)
+          handler: handleDeposit
+        - event: ExecuteTransaction(indexed address,indexed uint256)
+          handler: handleExecuteTransaction
+        - event: RevokeConfirmation(indexed address,indexed uint256)
+          handler: handleRevokeConfirmation
+        - event: SubmitTransaction(indexed address,indexed uint256,indexed address,uint256,bytes)
+          handler: handleSubmitTransaction
+      file: ./src/multi-sig-wallet.ts

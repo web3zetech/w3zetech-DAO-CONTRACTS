@@ -3,6 +3,12 @@
     "DAO": {
       "address": "0x51632D52aa0b31EeF31D80DAa9DA1bCf2724D53C",
       "startBlock": 15609833
+    },
+    "w3zetechToken": {
+      "address": "0xD818e3AD00F322ebb2A3659A09c1d44C5C447011"
+    },
+    "MultiSigWallet": {
+      "address": "0xbAB4a9cF91D802c053f05B96f809b4D98F3c0D54"
     }
   }
 }
