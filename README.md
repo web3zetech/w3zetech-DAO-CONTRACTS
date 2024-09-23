@@ -1,7 +1,7 @@
 # W3Zetech DAO
 
 ## Project Description  
-**W3Zetech DAO** is a student-led decentralized autonomous organization (DAO) focused on promoting web3 and blockchain education while providing a platform for active governance. Built on the **Base** blockchain, W3Zetech DAO empowers its members to propose, vote, and execute decisions about the future of the community using the **W3Zetech token (W3Z)**. The DAO manages its treasury via a multi-signature wallet, ensuring secure, transparent, and community-driven fund allocation. 
+**W3Zetech DAO** is a student-led decentralized autonomous organization (DAO) focused on promoting web3 and blockchain education while providing a platform for active governance. Built on the **Base Sepolia** blockchain, W3Zetech DAO empowers its members to propose, vote, and execute decisions about the future of the community using the **W3Zetech token (W3Z)**. The DAO manages its treasury via a multi-signature wallet, ensuring secure, transparent, and community-driven fund allocation. 
 
 W3Zetech DAO leverages **The Graph** to offer real-time data on governance activities, allowing for a seamless and transparent on-chain experience. Members can easily track proposals, votes, and token purchases, while ensuring all decisions are executed fairly and securely through smart contracts.
 
